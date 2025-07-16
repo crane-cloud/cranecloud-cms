@@ -7,6 +7,9 @@ RUN yarn install
 
 COPY . /app
 
+# Set production environment variables
+ENV NODE_ENV=production
+
 RUN yarn build
 
 

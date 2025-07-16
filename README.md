@@ -22,7 +22,7 @@ A modern content management system built with Sanity for managing CraneCloud com
 1. **Clone the repository**
 
    ```bash
-   git clone <repository-url>
+   git clone https://github.com/crane-cloud/cranecloud-cms.git
    cd cranecloud-cms
    ```
 
