@@ -1,10 +1,6 @@
 name: Production Deployment
 
 on:
-  push:
-    branches:
-      - ch-deploy-app
-
   release:
     types:
       - released
@@ -27,7 +23,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
         with:
-          ref: ch-deploy-app
+          ref: master
 
       - name: Get version
         id: version
