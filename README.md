@@ -46,8 +46,6 @@ A modern content management system built with Sanity for managing CraneCloud com
 - `yarn dev` - Start development server
 - `yarn start` - Start production server
 - `yarn build` - Build for production
-- `yarn deploy` - Deploy to Sanity
-- `yarn deploy-graphql` - Deploy GraphQL API
 
 ## 🌐 API Access
 
