@@ -14,9 +14,9 @@ on:
 jobs:
   build_and_deploy_staging:
     outputs:
-      image: ${{ steps.export.outputs.image }}
-      tag: ${{ steps.export.outputs.tag }}
-      release_version: ${{ steps.version.outputs.version }}
+      image: ${{ env.IMAGE }}
+      tag: ${{ env.TAG }}
+      release_version: ${{ env.version }}
 
     runs-on: ubuntu-latest
     env:
@@ -33,9 +33,9 @@ jobs:
         id: version
         run: |
           if [[ $GITHUB_EVENT_NAME == "release" ]]; then
-            echo "version=${GITHUB_REF#refs/tags/}" >> $GITHUB_OUTPUT
+            echo "version=${GITHUB_REF#refs/tags/}" >> $GITHUB_ENV
           else
-            echo "version=dev-$(date +'%Y%m%d')-$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
+            echo "version=dev-$(date +'%Y%m%d')-$(git rev-parse --short HEAD)" >> $GITHUB_ENV
           fi
 
       - name: Update CHANGELOG.md
@@ -152,7 +152,6 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
           context: .
-          file: docker/prod/Dockerfile
           labels: ${{ steps.meta.outputs.labels }}
           push: true
           tags: ${{ steps.meta.outputs.tags }}
@@ -168,13 +167,13 @@ jobs:
               core.error('Unable to find sha tag of image')
             } else {
               const tag = fullUrl.split(':')[1]
-              core.setOutput('image', fullUrl)
-              core.setOutput('tag', tag)
+              core.exportVariable('IMAGE', fullUrl)
+              core.exportVariable('TAG', tag)
             }
 
       - name: Update deployment image
         run: |
-          kubectl set image deployment/cranecloud-cms cranecloud-cms=${{ env.image }}:${{ steps.export.outputs.tag }} -n $namespace
+          kubectl set image deployment/cranecloud-cms cranecloud-cms=${{ env.image }}:${{ env.TAG }} -n $namespace
 
       - name: Verify deployment
         run: |
