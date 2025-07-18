@@ -1,0 +1,24 @@
+name: Test
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  test_and_report:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 23
+
+      - name: Setup Dependencies
+        run: yarn
+
+      - name: Run Test
+        run: yarn eslint
