@@ -50,12 +50,12 @@ export default defineType({
       // validation: (Rule) => Rule.required(),
     }),
     defineField({
-      name: 'eventType',
-      title: 'Event Type',
-      type: 'reference',
-      description: 'Select the category that best describes your event. Create new event types in the "Event Types" section if needed.',
-      to: [{type: 'eventType'}],
-      validation: (Rule) => Rule.required(),
+      name: 'eventTypes',
+      title: 'Event Types',
+      type: 'array',
+      description: 'Select one or more categories that best describe your event. Create new event types in the "Event Types" section if needed.',
+      of: [{type: 'reference', to: [{type: 'eventType'}]}],
+      validation: (Rule) => Rule.required().min(1),
     }),
     defineField({
       name: 'image',
@@ -144,14 +144,14 @@ export default defineType({
       title: 'title',
       date: 'date',
       location: 'location',
-      eventType: 'eventType.name',
+      eventTypes: 'eventTypes[].name',
       media: 'image',
     },
     prepare(selection) {
-      const {title, date, location, eventType, media} = selection
+      const {title, date, location, media} = selection
       return {
         title,
-        subtitle: `${eventType || 'No Type'} • ${location || 'No Location'} • ${date ? new Date(date).toLocaleDateString() : 'TBD'}`,
+        subtitle: `${location || 'No Location'} • ${date ? new Date(date).toLocaleDateString() : 'TBD'}`,
         media,
       }
     },
